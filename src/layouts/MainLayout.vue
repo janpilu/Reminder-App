@@ -9,35 +9,66 @@
           icon="menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
-          text-color="black"
         />
       </q-toolbar>
       <div class="q-px-lg q-pt-xl q-mb-md">
-        <div class="text-h3 text-dark">Reminder</div>
-        <div class="text-subtitle1 text-dark">Date</div>
+        <div class="text-h3">Reminder</div>
+        <div class="text-subtitle1">{{currentDate}}</div>
       </div>
+      <q-img
+        src="statics/clock.jpg" class="header-background absolute-top"/>
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+        v-model="leftDrawerOpen"
+        show-if-above
+        :width="200"
+        :breakpoint="500"
+      >
+        <q-scroll-area class="fit">
+          <q-list padding class="menu-list">
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="inbox" />
+              </q-item-section>
+
+              <q-item-section>
+                Inbox
+              </q-item-section>
+            </q-item>
+
+            <q-item active clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="star" />
+              </q-item-section>
+
+              <q-item-section>
+                Star
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="send" />
+              </q-item-section>
+
+              <q-item-section>
+                Send
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+
+              <q-item-section>
+                Drafts
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+      </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -47,6 +78,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink'
+import { date } from 'quasar'
 
 export default {
   name: 'MainLayout',
@@ -103,6 +135,21 @@ export default {
         }
       ]
     }
+  },
+  computed:{
+    currentDate(){
+      let timeStamp = Date.now()
+      return date.formatDate(timeStamp, 'dddd D MMMM')
+    }
   }
 }
 </script>
+
+<style lang="scss">
+  .header-background{
+    height: 100%;
+    z-index: -1;
+    opacity: 0.2;
+    filter: grayscale(100%);
+  }
+</style>
