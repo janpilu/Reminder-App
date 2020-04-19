@@ -9,14 +9,13 @@
           icon="menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
+          text-color="black"
         />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
+      <div class="q-px-lg q-pt-xl q-mb-md">
+        <div class="text-h3 text-dark">Reminder</div>
+        <div class="text-subtitle1 text-dark">Date</div>
+      </div>
     </q-header>
 
     <q-drawer
