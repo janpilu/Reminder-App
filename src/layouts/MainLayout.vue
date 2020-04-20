@@ -25,7 +25,7 @@
         :width="200"
         :breakpoint="500"
       >
-        <q-scroll-area class="fit">
+        <q-scroll-area style="height: calc(100% - 192px); margin-top: 192px;">
           <q-list padding class="menu-list">
             <q-item clickable v-ripple>
               <q-item-section avatar>
@@ -37,37 +37,18 @@
               </q-item-section>
             </q-item>
 
-            <q-item active clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="star" />
-              </q-item-section>
-
-              <q-item-section>
-                Star
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="send" />
-              </q-item-section>
-
-              <q-item-section>
-                Send
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="drafts" />
-              </q-item-section>
-
-              <q-item-section>
-                Drafts
-              </q-item-section>
-            </q-item>
+            
           </q-list>
         </q-scroll-area>
+        <q-img class="absolute-top" src="statics/sky.jpg" style="height: 192px">
+          <div class="absolute-bottom bg-transparent">
+            <div class="drawer-clock absolute-top">
+              <div class="text-h3">
+                {{currntTime}}
+              </div>
+            </div>
+          </div>
+        </q-img>
       </q-drawer>
 
     <q-page-container>
@@ -89,58 +70,21 @@ export default {
 
   data () {
     return {
-      leftDrawerOpen: false,
-      essentialLinks: [
-        {
-          title: 'Docs',
-          caption: 'quasar.dev',
-          icon: 'school',
-          link: 'https://quasar.dev'
-        },
-        {
-          title: 'Github',
-          caption: 'github.com/quasarframework',
-          icon: 'code',
-          link: 'https://github.com/quasarframework'
-        },
-        {
-          title: 'Discord Chat Channel',
-          caption: 'chat.quasar.dev',
-          icon: 'chat',
-          link: 'https://chat.quasar.dev'
-        },
-        {
-          title: 'Forum',
-          caption: 'forum.quasar.dev',
-          icon: 'record_voice_over',
-          link: 'https://forum.quasar.dev'
-        },
-        {
-          title: 'Twitter',
-          caption: '@quasarframework',
-          icon: 'rss_feed',
-          link: 'https://twitter.quasar.dev'
-        },
-        {
-          title: 'Facebook',
-          caption: '@QuasarFramework',
-          icon: 'public',
-          link: 'https://facebook.quasar.dev'
-        },
-        {
-          title: 'Quasar Awesome',
-          caption: 'Community Quasar projects',
-          icon: 'favorite',
-          link: 'https://awesome.quasar.dev'
-        }
-      ]
+      leftDrawerOpen: false
     }
   },
   computed:{
     currentDate(){
       let timeStamp = Date.now()
       return date.formatDate(timeStamp, 'dddd D MMMM')
+    },
+    currntTime(){
+      let timeStamp = Date.now()
+      return date.formatDate(timeStamp, 'HH : mm')
     }
+  },
+  methods:{
+    
   }
 }
 </script>
@@ -151,5 +95,8 @@ export default {
     z-index: -1;
     opacity: 0.2;
     filter: grayscale(100%);
+  }
+  .drawer-clock{
+    height: 192px;
   }
 </style>
