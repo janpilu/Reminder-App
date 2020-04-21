@@ -1,6 +1,5 @@
 <template>
   <q-page class="bg-grey-3 column block">
-
     <q-card
       v-for="(reminder,index) in reminders"
       :key="reminder.title"
@@ -55,7 +54,12 @@
 
 <script>
 import { LocalStorage } from 'quasar'
+import NewTask from '../components/NewTask'
+
 export default {
+  components: {
+    NewTask
+  },
   data() {
     return{
       reminders:JSON.parse(LocalStorage.getItem("reminders"))

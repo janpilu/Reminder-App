@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink'
-import { date } from 'quasar'
+  import EssentialLink from 'components/EssentialLink'
+  import { date } from 'quasar'
 
 export default {
   name: 'MainLayout',
