@@ -24,7 +24,7 @@
         class="bg-white absolute-right q-pa-xs row">
         <q-card-actions vertical class="justify-center reminder-options">
           <q-btn 
-            @click.stop="confirmDelete(index)"
+            @click.stop="edit(reminder)"
             flat 
             round 
             color="accent" 
@@ -40,6 +40,11 @@
       </q-card-section>
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="newReminderPopup" transition-show="scale" transition-hide="scale">
+      <NewReminder :current="currentReminder"></NewReminder>
+    </q-dialog>
+
     <q-btn 
       @click="add"
       
@@ -54,16 +59,21 @@
 
 <script>
 import { LocalStorage } from 'quasar'
-import NewTask from '../components/NewTask'
+import NewReminder from '../components/NewReminder'
 
 export default {
   components: {
-    NewTask
+    NewReminder
   },
   data() {
     return{
-      reminders:JSON.parse(LocalStorage.getItem("reminders"))
+      reminders:[],
+      newReminderPopup:false,
+      currentReminder:''
     }
+  },
+  created: function () {
+    this.$q.localStorage.set("reminders", JSON.stringify(this.reminders));
   },
   methods:
   {
@@ -86,6 +96,9 @@ export default {
     },
     add(){
 
+      this.newReminderPopup = true;
+
+/** 
       let reminders = [
         {
           title:'Drink Water',
@@ -117,12 +130,13 @@ export default {
 
       window.console.log("add");
       
-      this.$q.localStorage.set("reminders", "blu");
-      this.$q.localStorage.set("reminders", JSON.stringify(reminders));
-      
       let bo =this.$q.localStorage.get.item("reminders");
       window.console.log(JSON.parse(bo));
-      this.reminders = JSON.parse(LocalStorage.getItem("reminders"))
+      this.reminders = JSON.parse(this.$q.localStorage.get.item("reminders"))
+      */
+    },
+    edit(reminder){
+      this.currentReminder = reminder;
     }
   }
 }
