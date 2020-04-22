@@ -1,8 +1,16 @@
 <template>
     <q-card class="new-reminder-card">
       <q-card-section>
-        <q-card-section>
-          <div class="text-h6">New Reminder</div>
+        <q-card-section horizontal>
+            <q-card-section class="col-9">
+              <div class="text-h6">New Reminder</div>
+            </q-card-section>
+            <q-card-section class="col-3 q-pb-none">
+              <q-fab color="amber" text-color="black" icon="colorize" direction="down">
+                <q-fab-action color="info" text-color="black" @click="onClick" icon="mail" />
+                <q-fab-action color="warning" text-color="black" @click="onClick" icon="alarm" />
+              </q-fab>
+            </q-card-section>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -125,6 +133,7 @@ export default {
   data(){
     return{
       title:'',
+      color:'#00ff90',
       description:'',
       days:[],
       everyday:false,
