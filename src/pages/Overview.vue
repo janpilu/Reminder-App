@@ -5,11 +5,10 @@
       :key="reminder.title"
       clickable
       @click="reminder.active = !reminder.active"
-      :class='["reminder q-mx-sm q-mt-md"]'
+      class="reminder q-mx-sm q-mt-md"
     >
     <q-card-section
-    horizontal
-    class="row">
+    horizontal>
       <q-card-section
         :class='["col "+"bg-"+reminder.color, reminder.active ? "reminder-active":"reminder-inactive"]'
       >
@@ -20,8 +19,7 @@
           {{reminder.description}}
         </div>
       </q-card-section>
-      <q-card-section 
-        class="bg-white absolute-right q-pa-xs row">
+      <q-card-section class="row q-pa-none" >
         <q-card-actions vertical class="justify-center reminder-options">
           <q-btn 
             @click.stop="edit(reminder)"
@@ -182,12 +180,19 @@ export default {
  
 <style lang="scss">
 .reminder{
-
+  min-height: 108px;
+}
+.reminder-active{
+  min-height: 108px;
+  height: auto;
 }
 .reminder-inactive{
+  min-height: 108px;
+  height: 100%;
   filter: grayscale(0.71);
 }
 .reminder-options{
+  height: 100%;
   filter: grayscale(0) !important;
 }
 .description{

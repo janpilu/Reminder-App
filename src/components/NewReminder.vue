@@ -1,14 +1,22 @@
 <template>
-    <q-card class="new-reminder-card">
+    <q-card 
+      :class="'new-reminder-card'"
+      ref="card">
       <q-card-section>
         <q-card-section horizontal>
             <q-card-section class="col-9">
               <div class="text-h6">New Reminder</div>
             </q-card-section>
             <q-card-section class="col-3 q-pb-none">
-              <q-fab color="amber" text-color="black" icon="colorize" direction="down">
-                <q-fab-action color="info" text-color="black" @click="onClick" icon="mail" />
-                <q-fab-action color="warning" text-color="black" @click="onClick" icon="alarm" />
+              <q-fab 
+                :color="color" 
+                text-color="black" 
+                icon="colorize" 
+                direction="down" >
+                <q-fab-action color="info" @click="toggleColor('info')" />
+                <q-fab-action color="warning" @click="toggleColor('warning')" />
+                <q-fab-action color="positive" @click="toggleColor('positive')" />
+                <q-fab-action color="negative" @click="toggleColor('negative')" />
               </q-fab>
             </q-card-section>
         </q-card-section>
@@ -91,14 +99,14 @@
                 v-for="n in amount" 
                 :key="n"
                 filled 
-                v-model="time[n]" 
+                v-model="time[n-1]" 
                 mask="time" 
                 :rules="['time']">
                 <template v-slot:append>
                   <q-icon name="access_time" class="cursor-pointer">
                     <q-popup-proxy transition-show="scale" transition-hide="scale">
                       <q-time 
-                        v-model="time[n]" 
+                        v-model="time[n-1]" 
                         format24h
                         />
                     </q-popup-proxy>
@@ -115,8 +123,8 @@
 
       </q-card-section>
       <q-card-actions align="right">
-        <q-btn flat label="Decline" color="primary" v-close-popup />
-        <q-btn flat label="Accept" color="primary" @click="createReminder" v-close-popup />
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn flat label="Accept" color="primary" @click="createReminder" :disable="!isFilled()" v-close-popup />
       </q-card-actions>
       
     </q-card>
@@ -132,6 +140,7 @@ export default {
   ],
   data(){
     return{
+      colorVisible:false,
       title:'',
       color:'#00ff90',
       description:'',
@@ -186,7 +195,7 @@ export default {
           description:this.description,
           active:true,
           activeon:[],
-          color:'red',
+          color:this.color,
           time:[]
         };
         for (var day in this.days){
@@ -197,6 +206,16 @@ export default {
         window.console.log(temp)
         temp.push(reminder);
         this.$q.localStorage.set("reminders", JSON.stringify(temp));
+    },
+    isFilled(){
+      if(this.title ===""||this.days.length==0||this.amount==0||(this.time.length!=this.amount&&this.spread==false)){
+        return false
+      }else{
+        return true
+      }
+    },
+    toggleColor(color){
+      this.color = color;
     }
   }
 }
