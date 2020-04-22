@@ -75,6 +75,7 @@
               <q-checkbox 
                   v-model="spread" 
                   label="Spread evenly across the day?"
+                  disable
                   @input="createReminder" 
                   />
             </q-card-section>
@@ -138,6 +139,9 @@ export default {
   props:[
     'current'
   ],
+  computed:{
+
+  },
   data(){
     return{
       colorVisible:false,
@@ -190,6 +194,7 @@ export default {
       }
     },
     createReminder(){
+      let reminders = this.reminders = JSON.parse(this.$q.localStorage.getItem("reminders"));
       let reminder = {
           title:this.title,
           description:this.description,
@@ -201,11 +206,11 @@ export default {
         for (var day in this.days){
           reminder.activeon.push(this.days[day]);
         }
-
-        let temp = JSON.parse(this.$q.localStorage.getItem("reminders"));
-        window.console.log(temp)
-        temp.push(reminder);
-        this.$q.localStorage.set("reminders", JSON.stringify(temp));
+        for (var t in this.time){
+          reminder.time.push(this.time[t]);
+        }
+        reminders.push(reminder);
+        this.$q.localStorage.set("reminders", JSON.stringify(reminders));
     },
     isFilled(){
       if(this.title ===""||this.days.length==0||this.amount==0||(this.time.length!=this.amount&&this.spread==false)){
