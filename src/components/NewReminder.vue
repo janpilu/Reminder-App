@@ -177,14 +177,14 @@ export default {
           description:this.description,
           active:true,
           activeon:[],
-          color:'',
+          color:'red',
           time:[]
         };
         for (var day in this.days){
           reminder.activeon.push(this.days[day]);
         }
 
-        let temp = JSON.parse(this.$q.localStorage.get.item("reminders"));
+        let temp = JSON.parse(this.$q.localStorage.getItem("reminders"));
         window.console.log(temp)
         temp.push(reminder);
         this.$q.localStorage.set("reminders", JSON.stringify(temp));

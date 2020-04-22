@@ -41,7 +41,7 @@
       </q-card-section>
     </q-card>
 
-    <q-dialog v-model="newReminderPopup" transition-show="scale" transition-hide="scale">
+    <q-dialog v-model="newReminderPopup" transition-show="scale" transition-hide="scale" @hide="refresh">
       <NewReminder :current="currentReminder"></NewReminder>
     </q-dialog>
 
@@ -73,7 +73,13 @@ export default {
     }
   },
   created: function () {
-    this.$q.localStorage.set("reminders", JSON.stringify(this.reminders));
+    if(this.$q.localStorage.getItem("reminders")==null){
+      this.$q.localStorage.set("reminders", JSON.stringify(this.reminders));
+      window.console.log("empty")
+    }else{
+      this.reminders = JSON.parse(this.$q.localStorage.getItem("reminders"));
+      window.console.log("full")
+    }
   },
   methods:
   {
@@ -93,6 +99,9 @@ export default {
         message: 'Reminder Deleted',
         icon: 'delete_outline'
       })
+    },
+    refresh(){
+      this.reminders = JSON.parse(this.$q.localStorage.getItem("reminders"));
     },
     add(){
 
