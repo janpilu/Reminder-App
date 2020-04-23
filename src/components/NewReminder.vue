@@ -146,7 +146,7 @@ export default {
     return{
       colorVisible:false,
       title:'',
-      color:'#00ff90',
+      color:'positive',
       description:'',
       days:[],
       everyday:false,

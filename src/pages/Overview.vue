@@ -4,7 +4,7 @@
       v-for="(reminder,index) in reminders"
       :key="reminder.title + index"
       clickable
-      @click="reminder.active = !reminder.active"
+      @click="toggleActive(index)"
       class="reminder q-mx-sm q-mt-md"
     >
     <q-card-section
@@ -39,7 +39,7 @@
       </q-card-section>
     </q-card>
 
-    <q-dialog v-model="newReminderPopup" transition-show="scale" transition-hide="scale" @hide="refresh">
+    <q-dialog v-model="newReminderPopup" transition-show="scale" transition-hide="scale" @hide="pull">
       <NewReminder :current="currentReminder"></NewReminder>
     </q-dialog>
 
@@ -103,45 +103,25 @@ export default {
         icon: 'delete_outline'
       })
     },
-    refresh(){
+    pull(){
       this.reminders = JSON.parse(this.$q.localStorage.getItem("reminders"));
+    },
+    push(){
+      this.$q.localStorage.set("reminders", JSON.stringify(this.reminders));
     },
     add(){
       this.newReminderPopup = true;
     },
     edit(reminder){
       this.currentReminder = reminder;
+    },
+    toggleActive(i){
+      this.reminders[i].active = !this.reminders[i].active;
+      this.push();
     }
   }
 }
-/**
- * [
-        {
-          title:'Drink Water',
-          active:true,
-          activeon:[
-            0,1,2,3,4,5,6
-          ],
-          color:'light-blue-5',
-          time:[
-            "10:00",
-            "18:00"
-          ]
-        },
-        {
-          title:'Eat Food',
-          active:true,
-          activeon:[
-            0,1,2,3,4,5,6
-          ],
-          color:'light-green-5',
-          time:[
-            "10:00",
-            "18:00"
-          ]
-        }
-      ]
- */
+
 </script>  
 
  

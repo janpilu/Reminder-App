@@ -12,7 +12,7 @@
         />
       </q-toolbar>
       <div class="q-px-lg q-pt-xl q-mb-md">
-        <div class="text-h3">Reminder</div>
+        <div class="text-h3">RemindMe</div>
         <div class="text-subtitle1">{{currentDate}}</div>
       </div>
       <q-img

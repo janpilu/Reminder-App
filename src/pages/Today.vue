@@ -1,17 +1,21 @@
 <template>
   <q-page class="flex block">
     <div class="q-pa-md row col-12">
+      <div v-for=" r in this.alltoday" :key="r.title + r.time">
         <q-card 
-        v-for=" r in this.alltoday" :key="r.title + r.time"
+        v-if="r.active"
+        @click="notif"
         :class='["card q-ml-md q-mb-md bg-"+r.color]'
         ><!-- ,this.isPast(r.time[0]) ? "past": "past"-->
-          <q-card-section>
-            <div class="text-h5">{{r.title}}</div>
+          <q-card-section vertical>
+            <div class="text-h6">{{r.title}}</div>
+            <div class="text-subtitle2">{{r.description}}</div>
           </q-card-section>
-          <q-card-section>
+          <q-card-section class="q-mt-none q-pt-none">
            <div class="text-subtitle2">{{r.time[0]}}</div>
           </q-card-section>
         </q-card>
+      </div>
     </div>
   </q-page>
 </template>
@@ -19,6 +23,10 @@
 <script>
 import { mapState } from "vuex";
 import { date } from 'quasar';
+document.addEventListener('deviceready', () => {
+  // it's only now that we are sure
+  // the event has triggered
+}, false)
 export default {
 
   
@@ -40,6 +48,23 @@ export default {
         if(temp[reminder].activeon.includes(this.todaysDay)){
           this.alltoday.push(temp[reminder])
         }
+      }
+    },notif(){
+      for(r of this.alltoday){
+        let d = Date.now()
+        const h = date.extractDate(r.time[0], 'HH')
+        const m = date.extractDate(r.time[0], 'mm')
+
+        hn = date.formatDate(h, 'HH');
+        mn = date.formatDate(m, 'mm');
+
+        let adjustedDate = date.adjustDate(d, { hours: hn, minutes: mn })
+        cordova.plugins.notification.local.schedule({
+          title: r.title,
+          text: r.description,
+          foreground: true,
+          trigger: { at: adjustedDate }
+        })
       }
     },
     splitReminder(){
