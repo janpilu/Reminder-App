@@ -26,24 +26,42 @@ export default {
   data(){
     return{
       todaysReminders:[],
-      reminders:[]
+      reminders:[],
+      alltoday:[],
+      split:[]
     }
   },
   methods:{
     getTodaysReminders(){
       this.reminders = JSON.parse(this.$q.localStorage.getItem("reminders"));
-      let alltoday = []
+      window.console.log(this.reminders)
+    
       for(let reminder in this.reminders){
         if(this.reminders[reminder].activeon.includes(this.todaysDay)){
-          alltoday.push(this.reminders[reminder])
-          window.console.log(alltoday)
-          window.console.log(this.reminders)
+          this.alltoday.push(this.reminders[reminder])
         }
       }
+
+      let i = 0
+      for(let reminder of this.alltoday){
+        window.console.log(reminder)
+        if(reminder.time.length>1){
+          window.console.log(reminder)
+          for(let t in reminder.time){
+            window.console.log(reminder.time.lenght)
+            this.split.push(reminder)
+            this.split[t].time = []
+            this.split[t].time.push(reminder.time[t])
+          }
+        }
+      }
+
       
+      /**
       let i = 0
       for(let reminder of alltoday){
         if(reminder.time.length>1){
+          window.console.log(reminder)
           window.console.log(reminder.time)
           let j = 0;
           let temp =[]
@@ -59,7 +77,7 @@ export default {
           window.console.log(temp)
         }
         i++
-      }
+      }*/
 
 
 
