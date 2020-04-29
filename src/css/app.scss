@@ -1,1 +1,37 @@
 // app global css in SCSS form
+$reminderblue:  #75C4FF;
+$reminderred:   #FF4A3D;
+$remindergreen: #75FF78;
+$reminderpurple:#D9A6FF;
+$reminderyellow:#FFFA59;
+
+.text-reminderblue {
+    color: $reminderblue;
+}
+.bg-reminderblue {
+    background: $reminderblue;
+}
+.text-reminderred {
+    color: $reminderred;
+}
+.bg-reminderred {
+    background: $reminderred;
+}
+.text-remindergreen {
+    color: $remindergreen;
+}
+.bg-remindergreen {
+    background: $remindergreen;
+}
+.text-reminderpurple {
+    color: $reminderpurple;
+}
+.bg-reminderpurple {
+    background: $reminderpurple;
+}
+.text-reminderyellow {
+    color: $reminderyellow;
+}
+.bg-reminderyellow {
+    background: $reminderyellow;
+}

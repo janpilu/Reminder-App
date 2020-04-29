@@ -13,10 +13,11 @@
                 text-color="black" 
                 icon="colorize" 
                 direction="down" >
-                <q-fab-action color="info" @click="toggleColor('info')" />
-                <q-fab-action color="warning" @click="toggleColor('warning')" />
-                <q-fab-action color="positive" @click="toggleColor('positive')" />
-                <q-fab-action color="negative" @click="toggleColor('negative')" />
+                <q-fab-action color="remindergreen" @click="toggleColor('remindergreen')" />
+                <q-fab-action color="reminderyellow" @click="toggleColor('reminderyellow')" />
+                <q-fab-action color="reminderred" @click="toggleColor('reminderred')" />
+                <q-fab-action color="reminderblue" @click="toggleColor('reminderblue')" />
+                <q-fab-action color="reminderpurple" @click="toggleColor('reminderpurple')" />
               </q-fab>
             </q-card-section>
         </q-card-section>
@@ -66,6 +67,7 @@
                 :disable="once"
                 :options="amountOptions"
                 label="Frequency"
+                @input="setSpreadTime"
                 />
             </q-card-section>
           </q-card-section>
@@ -75,8 +77,7 @@
               <q-checkbox 
                   v-model="spread" 
                   label="Spread evenly across the day?"
-                  disable
-                  @input="createReminder" 
+                  @input="setSpreadTime" 
                   />
             </q-card-section>
             <q-separator />
@@ -90,6 +91,7 @@
                 :step="1"
                 label-always
                 color="accent"
+                @change="setSpreadTime"
               />
             </q-card-section>
             <q-separator />
@@ -146,7 +148,7 @@ export default {
     return{
       colorVisible:false,
       title:'',
-      color:'positive',
+      color:'remindergreen',
       description:'',
       days:[],
       everyday:false,
@@ -221,7 +223,27 @@ export default {
     },
     toggleColor(color){
       this.color = color;
+    },
+    setSpreadTime(){
+      
+      if(this.spread){
+
+        this.time =[]
+        let timespan = this.range.max-this.range.min
+        timespan *=60
+        timespan /= this.amount
+        
+        let newDate = date.buildDate({ hours:this.range.min})
+        for(let i = 1;i<=amount;i++){
+          let temp = Object.assign({},newDate)
+          temp = date.addToDate(temp,{minutes:timespan*i})
+          let text = date.formatDate(temp, 'HH:mm')
+          this.title = text
+          this.time.push(text)
+        }
+      }
     }
+
   }
 }
 </script>

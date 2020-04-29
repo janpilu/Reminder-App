@@ -1,15 +1,15 @@
 <template>
   <q-page class="flex block">
-    <div class="q-pa-md row col-12">
-      <div v-for=" r in this.alltoday" :key="r.title + r.time">
+    <div class="q-py-md q-pr-md row">
+      <div v-for=" (r, i) in this.alltoday" :key="i" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 ">
         <q-card 
         v-if="r.active"
-        @click="notif"
-        :class='["card q-ml-md q-mb-md bg-"+r.color]'
-        ><!-- ,this.isPast(r.time[0]) ? "past": "past"-->
+        @click="activeTime = r.time[0],activeDesc = r.description,activeTitle = r.title,activeColor = r.color,more=true"
+        :class='["card q-ml-md q-mb-md bg-"+r.color,isPast(r.time[0]),{active: i === activeItem}]'
+        ><!--:class='["card q-ml-md q-mb-md bg-"+r.color,isPast(r.time[0]),]'-->
           <q-card-section vertical>
-            <div class="text-h6">{{r.title}}</div>
-            <div class="text-subtitle2">{{r.description}}</div>
+            <div class="text-h6 card-title">{{r.title}}</div>
+            <div class="text-subtitle2 card-description">{{r.description}}</div>
           </q-card-section>
           <q-card-section class="q-mt-none q-pt-none">
            <div class="text-subtitle2">{{r.time[0]}}</div>
@@ -17,6 +17,28 @@
         </q-card>
       </div>
     </div>
+    <q-dialog v-model="more">
+      <q-card :class='"cardpopup bg-"+activeColor'>
+        <q-card-section class="popup-content q-pa-none" vertical>
+          <q-card-section class="row justify-between">
+            <div class="text-h5 col-8 popup-title">{{activeTitle}}</div>
+            <div class="text-h6  col-2-xl self-center justify-right">{{activeTime}}</div>
+          </q-card-section>
+
+          <q-separator />
+
+          <q-card-section style="max-height: 50vh" class="scroll popup-description">
+            <p>{{activeDesc}}</p>
+          </q-card-section>
+
+          <q-separator />
+
+          <q-card-actions class="popup-bottom self-end" align="right">
+            <q-btn flat label="Close" v-close-popup @click="active=null"/>
+          </q-card-actions>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -32,16 +54,21 @@ export default {
   
   data(){
     return{
+      activeTime: null,
+      activeDesc: null,
+      activeTitle: null,
+      activeItem: null,
+      activeColor: null,
       todaysReminders:[],
       reminders:[],
       alltoday:[],
-      split:[]
+      split:[],
+      more:false
     }
   },
   methods:{
     getTodaysReminders(){
       this.reminders = JSON.parse(this.$q.localStorage.getItem("reminders"));
-      window.console.log(this.reminders)
       let temp = Object.assign({}, this.reminders);
     
       for(let reminder in temp){
@@ -49,16 +76,20 @@ export default {
           this.alltoday.push(temp[reminder])
         }
       }
-    },notif(){
-      for(r of this.alltoday){
-        let d = Date.now()
-        const h = date.extractDate(r.time[0], 'HH')
-        const m = date.extractDate(r.time[0], 'mm')
+    },
+    selectCard(i) {
+      this.activeItem = i;
+    },
+    notif(){
+      for(let r of this.alltoday){
 
-        hn = date.formatDate(h, 'HH');
-        mn = date.formatDate(m, 'mm');
+        let h = r.time[0].slice(0,2)
+        let m = r.time[0].slice(3)
 
-        let adjustedDate = date.adjustDate(d, { hours: hn, minutes: mn })
+        window.console.log(h+" "+m)
+
+        let adjustedDate = date.adjustDate(Date.now(), { hours: h, minutes: m, seconds: 0 })
+        window.console.log(adjustedDate+ r.title)
         cordova.plugins.notification.local.schedule({
           title: r.title,
           text: r.description,
@@ -74,8 +105,7 @@ export default {
         let temp=[];
         if(this.alltoday[i].time.length>1){
           
-          let times = this.alltoday[i].time.slice(0);//works
-          //console.log(times)
+          let times = this.alltoday[i].time.slice(0);
           for(let j=0;j<times.length;j++){
             temp.push(Object.assign({}, this.alltoday[i]))
             temp[j].time=[times[j]]
@@ -97,8 +127,20 @@ export default {
       });
     },
     isPast(time){
-      let temp = [time, currentTime]
-      this.temp.sort(function(b,a){
+      let temp = [time, this.currentTime]
+      temp.sort(function(b,a){
+        const datea = date.extractDate(a, 'HH:mm')
+        const dateb = date.extractDate(b, 'HH:mm')
+        return dateb - datea;
+      });
+      if (temp[0]===time){
+        return 'past'
+      }
+      return ''
+    },
+    isPastMe(time){
+      let temp = [time, this.currentTime]
+      temp.sort(function(b,a){
         const datea = date.extractDate(a, 'HH:mm')
         const dateb = date.extractDate(b, 'HH:mm')
         return dateb - datea;
@@ -119,19 +161,44 @@ export default {
     currentTime(){
       return date.formatDate(Date.now(), 'HH:mm');
     }
-  },created(){
+  },
+  created(){
     console.log("hu")
     this.getTodaysReminders()
     this.splitReminder()
     this.sortReminder()
+    this.notif()
   }
 }
 </script>
 <style lang="scss">
 .card{
-  height: auto;
+  height: 124px;
 }
 .past{
-  filter: grayscale(100%);
+  filter: grayscale(70%);
+}
+.card-title{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-description{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.popup-title{
+  word-wrap: break-word;
+}
+.cardpopup{
+  min-width: 80% !important;
+  min-height: 40%;
+}
+.popup-description{
+  min-height: 9rem;
+  font-size: 14pt;
+}
+.popup-content{
+  height: auto;
 }
 </style>

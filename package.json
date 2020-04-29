@@ -2,7 +2,7 @@
   "name": "reminder",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Reminder",
+  "productName": "RemindMe",
   "cordovaId": "com.janpilu.quasarreminder",
   "capacitorId": "",
   "author": "Jan <jlangela@student.tgm.ac.at>",

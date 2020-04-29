@@ -14,7 +14,7 @@
       >
         <div class="text-overline" v-if="reminder.active">Active</div>
         <div class="text-overline" v-else>Inactive</div>
-        <div class="text-h5 q-mt-sm q-mb-xs">{{reminder.title}}</div>
+        <div class="text-h5 q-mt-sm q-mb-xs title">{{reminder.title}}</div>
         <div class="text-caption text-white description ">
           {{reminder.description}}
         </div>
@@ -145,7 +145,14 @@ export default {
 .description{
   max-width: 80%;
   white-space: nowrap;
+  text-overflow: ellipsis;
   overflow: hidden;
+  color:black !important;
+}
+.title{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 </style>
