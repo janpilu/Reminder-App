@@ -29,13 +29,13 @@
           <q-card-section style="max-height: 50vh" class="scroll popup-description">
             <p>{{activeDesc}}</p>
           </q-card-section>
-
-          <q-separator />
-
-          <q-card-actions class="popup-bottom self-end" align="right">
-            <q-btn flat label="Close" v-close-popup @click="active=null"/>
-          </q-card-actions>
         </q-card-section>
+        <q-separator />
+
+        <q-card-actions class="popup-bottom self-end" align="right">
+          <q-btn flat label="Close" v-close-popup @click="active=null"/>
+        </q-card-actions>
+        
       </q-card>
     </q-dialog>
   </q-page>
@@ -187,17 +187,24 @@ export default {
   text-overflow: ellipsis;
 }
 .popup-title{
-  word-wrap: break-word;
+    word-wrap: break-word;
+  }
+@media (max-width: 599px) {
+  
+  .cardpopup{
+    min-width: 80% !important;
+  }
 }
-.cardpopup{
-  min-width: 80% !important;
-  min-height: 40%;
+@media (min-width: 599px) {
+  .cardpopup{
+    min-width: 30rem !important;
+  }
 }
 .popup-description{
-  min-height: 9rem;
-  font-size: 14pt;
-}
-.popup-content{
-  height: auto;
-}
+    min-height: 20rem;
+    font-size: 14pt;
+  }
+  .popup-content{
+    height: auto;
+  }
 </style>
