@@ -1,12 +1,11 @@
 <template>
   <q-page class="flex block">
     <div class="q-py-md q-pr-md row">
-      <div v-for=" (r, i) in this.alltoday" :key="i" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 ">
+      <div v-for=" (r, i) in this.alltoday" :key="i" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 " v-if="r.active">
         <q-card 
-        v-if="r.active"
         @click="activeTime = r.time[0],activeDesc = r.description,activeTitle = r.title,activeColor = r.color,more=true"
         :class='["card q-ml-md q-mb-md bg-"+r.color,isPast(r.time[0]),{active: i === activeItem}]'
-        ><!--:class='["card q-ml-md q-mb-md bg-"+r.color,isPast(r.time[0]),]'-->
+        >
           <q-card-section vertical>
             <div class="text-h6 card-title">{{r.title}}</div>
             <div class="text-subtitle2 card-description">{{r.description}}</div>

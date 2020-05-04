@@ -228,17 +228,25 @@ export default {
       
       if(this.spread){
 
+        if(this.range.max==this.range.min){
+          if(this.range.min==0){
+            this.range.max++
+          }
+          else this.range.min--
+        }
+
         this.time =[]
         let timespan = this.range.max-this.range.min
         timespan *=60
         timespan /= this.amount
         
-        let newDate = date.buildDate({ hours:this.range.min})
-        for(let i = 1;i<=amount;i++){
-          let temp = Object.assign({},newDate)
+        let newDate = date.buildDate({ hours:this.range.min, minutes:0})
+        for(let i = 1;i<=this.amount;i++){
+          let temp = new Date(newDate.getTime())
+          console.log(temp)
           temp = date.addToDate(temp,{minutes:timespan*i})
           let text = date.formatDate(temp, 'HH:mm')
-          this.title = text
+          
           this.time.push(text)
         }
       }
