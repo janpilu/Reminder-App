@@ -43,9 +43,12 @@
       <NewReminder :current="currentReminder"></NewReminder>
     </q-dialog>
 
+    <q-dialog v-model="editReminderPopup" transition-show="scale" transition-hide="scale" @hide="pull">
+      <EditReminder :current="currentReminder"></EditReminder>
+    </q-dialog>
+
     <q-btn 
       @click="add"
-      
       round 
       color="primary" 
       icon="add" 
@@ -60,10 +63,12 @@ import{mapActions} from 'vuex'
 import{mapState} from 'vuex'
 import { LocalStorage } from 'quasar'
 import NewReminder from '../components/NewReminder'
+import EditReminder from '../components/EditReminder'
 
 export default {
   components: {
-    NewReminder
+    NewReminder,
+    EditReminder
   },
   computed:{
 
@@ -71,6 +76,7 @@ export default {
   data() {
     return{
       newReminderPopup:false,
+      editReminderPopup:false,
       currentReminder:'',
       reminders:[]
     }
@@ -113,6 +119,7 @@ export default {
       this.newReminderPopup = true;
     },
     edit(reminder){
+      this.editReminderPopup = true;
       this.currentReminder = reminder;
     },
     toggleActive(i){

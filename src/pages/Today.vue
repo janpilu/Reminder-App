@@ -33,7 +33,7 @@
         <q-separator />
 
         <q-card-actions class="popup-bottom self-end" align="right">
-          <q-btn flat label="Close" v-close-popup @click="active=null"/>
+          <q-btn flat label="Close" v-close-popup/>
         </q-card-actions>
         
       </q-card>
